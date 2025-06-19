@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillMart Bot Test - REST Version</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { color: #003366; }
+        .chat-container { 
+            max-width: 400px; 
+            margin: 20px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            padding: 20px; 
+            background: #f9f9f9;
+        }
+        .messages { 
+            height: 300px; 
+            overflow-y: auto; 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            background: white; 
+            margin-bottom: 10px;
+        }
+        .message { 
+            margin: 10px 0; 
+            padding: 8px; 
+            border-radius: 5px; 
+        }
+        .user-message { 
+            background: #007bff; 
+            color: white; 
+            text-align: right; 
+        }
+        .bot-message { 
+            background: #e9ecef; 
+            color: black; 
+        }
+        .input-area { 
+            display: flex; 
+            gap: 10px; 
+        }
+        input[type="text"] { 
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        button { 
+            padding: 10px 20px; 
+            background: #003366; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        .status { 
+            margin: 10px 0; 
+            padding: 10px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>BillMart Chatbot Test - REST API</h1>
+    <p>Testing direct REST API connection to our multilingual Rasa bot.</p>
+    
+    <div id="status" class="status">Ready to test...</div>
+    
+    <div class="chat-container">
+        <div id="messages" class="messages"></div>
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Type your message here..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let conversationHistory = [];
+        
+        // Send initial greeting when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            sendMessageToBot("Hello");
+        });
+        
+        function addMessage(text, isUser) {
+    const messagesDiv = document.getElementById('messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+    
+    if (isUser) {
+        // User messages: plain text
+        messageDiv.textContent = text;
+    } else {
+        // Bot messages: format properly
+        const formattedText = formatBotResponse(text);
+        messageDiv.innerHTML = formattedText;
+    }
+    
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function formatBotResponse(text) {
+    // Convert markdown-style formatting to HTML
+    let formatted = text
+        // Convert **bold** to <strong>
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        // Convert bullet points
+        .replace(/• /g, '<br>• ')
+        // Convert numbered lists
+        .replace(/(\d+\. )/g, '<br>$1')
+        // Convert line breaks
+        .replace(/\n/g, '<br>')
+        // Clean up multiple line breaks
+        .replace(/<br><br>/g, '<br>')
+        // Add proper spacing after sections
+        .replace(/:/g, ':<br>');
+    
+    return formatted;
+}
+
+        function updateStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${isError ? 'error' : 'success'}`;
+        }
+        
+        async function sendMessageToBot(message) {
+            try {
+                updateStatus("Sending message to bot...");
+                
+                const response = await fetch('http://localhost:5005/webhooks/rest/webhook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender: 'test_user',
+                        message: message,
+                        metadata: {
+                            language: navigator.language.slice(0, 2)
+                        }
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const botResponses = await response.json();
+                
+                if (botResponses && botResponses.length > 0) {
+                    updateStatus(`✅ Bot responded successfully!`);
+                    botResponses.forEach(response => {
+                        addMessage(response.text, false);
+                    });
+                } else {
+                    updateStatus("⚠️ Bot response was empty", true);
+                }
+                
+            } catch (error) {
+                updateStatus(`❌ Error: ${error.message}`, true);
+                console.error('Error sending message:', error);
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message, true);
+                sendMessageToBot(message);
+                input.value = '';
+            }
+        }
+        
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
