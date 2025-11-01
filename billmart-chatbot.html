@@ -203,6 +203,53 @@
             opacity: 0.9;
             font-weight: 400;
         }
+        /* Bot Avatar Styles */
+.bot-message {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.bot-avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    margin-top: 2px;
+}
+
+.bot-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.bot-message-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.bot-message-content span {
+    background: #f1f1f1;
+    color: #333;
+    padding: 10px 14px;
+    border-radius: 18px 18px 18px 4px;
+    display: inline-block;
+    max-width: 100%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* User message adjustments to maintain layout */
+.user-message {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 40px; /* Space for bot avatar alignment */
+}
 
         /* CHAT MESSAGES */
         .chat-messages {
@@ -210,6 +257,7 @@
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .message {
@@ -418,6 +466,41 @@
             transform-origin: bottom right;
         }
 
+        /* === TYPING INDICATOR STYLES === */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .typing-animation {
+            display: flex;
+            gap: 3px;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .typing-animation span {
+            width: 6px;
+            height: 6px;
+            background: #007bff;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-animation span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-animation span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+
 
     </style>
 </head>
@@ -465,8 +548,13 @@
 <script>
 // Configuration
 const RASA_API_URL = "http://localhost:5005/webhooks/rest/webhook";
+// === ENHANCED SESSION STATE MANAGEMENT ===
+let currentUserId = null;
+let isSessionStarted = false;
+let rasaSessionInitialized = false; // NEW: Track actual Rasa session state
+let isWelcomeMode = true;
 
-// FAQ options
+
 const faqs = [
     { title: "What is GigCash?", payload: "/ask_gigcash_info" },
     { title: "How to apply for EmpCash?", payload: "/ask_empcash_info" },
@@ -478,28 +566,164 @@ const faqs = [
     { title: "Insurance Claim Finance details", payload: "/ask_insurance_claim_finance" }
 ];
 
-let isWelcomeMode = true;
 
-// Show/hide chat window
-document.getElementById('billmart-chatbot-launcher').onclick = function() {
-    document.getElementById('billmart-chatbot-window').style.display = 'block';
-    if (isWelcomeMode) {
-        showWelcomeScreen();
+// === CORE CHATBOT INITIALIZATION ===
+document.addEventListener('DOMContentLoaded', function() {
+    // This is the entry point when the page loads
+    initializeChatWidget();
+
+    // Set up launcher and close button event listeners
+    document.getElementById('billmart-chatbot-launcher').onclick = function() {
+        document.getElementById('billmart-chatbot-window').style.display = 'block';
+        if (isWelcomeMode) {
+            showWelcomeScreen();
+        }
+    };
+});
+async function initializeRasaSession() {
+    if (rasaSessionInitialized) return;
+    
+    try {
+        console.log('🔗 Initializing Rasa session silently...');
+        
+        const response = await fetch(RASA_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                sender: currentUserId,
+                message: '/session_start'
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json(); // ✅ ADD THIS
+            console.log('✅ Rasa session initialized successfully');
+            console.log('📨 Session response data:', data); // ✅ DEBUG LOG
+            
+            // ✅ PROCESS THE GREETING MESSAGES
+            if (data && data.length > 0) {
+                data.forEach((msg, index) => {
+                    setTimeout(() => {
+                        if (msg.text) {
+                            addBotMessage(msg.text);
+                        }
+                    }, index * 500); // Stagger messages
+                });
+            }
+            
+            rasaSessionInitialized = true;
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }     
+    } catch (error) {
+        console.error('❌ Rasa session initialization failed:', error);
+        hideTypingIndicator();
+        
+        // Show fallback greeting even if session fails
+        addBotMessage(`Hi there! 👋 Welcome to BillMart FinTech!
+
+🏆 We've disbursed ₹2,500+ crores and helped 23,000+ businesses with their financing needs.
+
+How can I help you today?`);
     }
-};
-
-function closeChatbot() {
-    document.getElementById('billmart-chatbot-window').style.display = 'none';
 }
 
-// Handle Enter key press
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendUserMessage();
+
+async function initializeChatWidget() {
+    if (isSessionStarted) return;
+    
+    currentUserId = 'user_' + getSessionId();
+    console.log('🚀 Initializing chat session for user:', currentUserId);
+    
+    // Show welcome screen immediately for UX
+    showWelcomeScreen();
+    
+    // Initialize Rasa session silently in background
+    await initializeRasaSession();
+    
+    isSessionStarted = true;
+}
+
+async function initializeRasaSession() {
+    if (rasaSessionInitialized) return;
+    
+    try {
+        console.log('🔗 Initializing Rasa session silently...');
+        
+        const response = await fetch(RASA_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                sender: currentUserId,
+                message: '/session_start'
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Rasa session initialized successfully');
+            rasaSessionInitialized = true;
+            
+            // CRITICAL: Don't display session start messages in welcome mode
+            // They'll be shown when user transitions to chat
+        } else {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+    } catch (error) {
+        console.error('❌ Rasa session initialization failed:', error);
+        // Don't block UI, but log the issue
+    }
+}
+async function sendToRasa(message) {
+    const sendBtn = document.getElementById('send-button');
+    sendBtn.disabled = true;
+    
+    try {
+        // Ensure Rasa session is ready before sending any message
+        if (!rasaSessionInitialized) {
+            console.log('⏳ Rasa session not ready, initializing...');
+            await initializeRasaSession();
+        }
+        
+        const response = await fetch(RASA_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                sender: currentUserId,
+                message: message
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+            data.forEach(msg => {
+                addBotMessage(msg.text || "", msg.buttons || []);
+            });
+        } else {
+            addBotMessage("Sorry, I didn't understand that. Could you please rephrase?");
+        }
+        
+    } catch (error) {
+        console.error('Error sending message to Rasa:', error);
+        addBotMessage("Sorry, I'm having trouble connecting. Please try again later.");
+        
+        // Reset session state on connection failure
+        rasaSessionInitialized = false;
+    } finally {
+        sendBtn.disabled = false;
+        const input = document.getElementById('billmart-chatbot-input');
+        if (input) input.focus();
     }
 }
 
-// Show welcome screen with scrollable FAQ
+
+// === UI & MESSAGE HANDLING ===
 function showWelcomeScreen() {
     const content = document.getElementById('billmart-chatbot-content');
     content.innerHTML = `
@@ -510,7 +734,7 @@ function showWelcomeScreen() {
             <div class="faq-container">
                 <div class="faq-scroll-area">
                     ${faqs.map(faq => 
-                        `<button class="faq-btn" onclick="sendFAQ('${faq.payload}', '${faq.title}')">${faq.title}</button>`
+                        `<button class="faq-btn" onclick="sendFAQ('${faq.payload}', '${escapeHtml(faq.title)}')">${escapeHtml(faq.title)}</button>`
                     ).join('')}
                 </div>
                 <button class="talk-with-bot" onclick="showChatInput()">
@@ -524,24 +748,143 @@ function showWelcomeScreen() {
     isWelcomeMode = true;
 }
 
-function showChatInput() {
+async function showChatInput() {
     isWelcomeMode = false;
-    document.getElementById('billmart-chatbot-content').innerHTML = '<div class="chat-messages"></div>';
+    const content = document.getElementById('billmart-chatbot-content');
+    content.innerHTML = '<div class="chat-messages"></div>';
     document.querySelector('.chat-input-area').style.display = 'flex';
     document.getElementById('billmart-chatbot-input').focus();
+    
+    const chatMessagesContainer = document.querySelector('.chat-messages');
+    observeChatContainer(chatMessagesContainer);
+    
+    // IMMEDIATE: Show typing indicator for instant feedback
+    showTypingIndicator();
+    
+    // BACKGROUND: Initialize session without blocking
+    initializeRasaSessionInBackground();
 }
 
-// Send FAQ selection
+
+function addBotWelcomeMessage() {
+    addBotMessage(`Hi there! 👋 Welcome to BillMart FinTech - India's leading digital lending marketplace!
+
+🏆 We've disbursed ₹2,500+ crores and helped 23,000+ businesses with their financing needs.
+
+We serve:
+👥 Individuals - Salary advances (EmpCash) & gig worker funding (GigCash)
+🏢 Businesses - Supply chain finance, term loans, working capital
+💼 Lenders - Investment opportunities in verified deals
+
+How can I help you today?`);
+}
+
+function addUserMessage(text) {
+    const chatMessages = document.querySelector('.chat-messages');
+    if (!chatMessages) return;
+    
+    const processedText = text.replace(/(\S{40,})/g, (match) => match.replace(/(.{40})/g, '$1\u200B'));
+    
+    chatMessages.innerHTML += `
+        <div class="message user-message">
+            <span>${escapeHtml(processedText)}</span>
+        </div>
+    `;
+    smartScrollToBottom(chatMessages, true);
+}
+function smartScrollToBottom(container, forceScroll = false) {
+    if (!container) return;
+    
+    // Industry standard: Check if user is near bottom (within 150px)
+    const scrollThreshold = 150;
+    const isNearBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + scrollThreshold;
+    
+    // Auto-scroll if user is near bottom OR forced (new conversation)
+    if (isNearBottom || forceScroll) {
+        // Smooth scroll to bottom with slight delay for DOM updates
+        setTimeout(() => {
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
+        }, 100);
+    }
+}
+
+// Enhanced chat container observer
+function observeChatContainer(container) {
+    if (!container) return;
+    
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // Auto-scroll when new messages are added
+                smartScrollToBottom(container);
+            }
+        });
+    });
+
+    observer.observe(container, { 
+        childList: true, 
+        subtree: true 
+    });
+    
+    // Store observer for cleanup if needed
+    container._observer = observer;
+}
+
+
+function addBotMessage(text, buttons = []) {
+    const chatMessages = document.querySelector('.chat-messages');
+    if (!chatMessages) return;
+    
+    const processedText = processMarkdown(text);
+    
+    // Enhanced bot message with avatar
+    const botMessageElement = document.createElement('div');
+    botMessageElement.className = 'message bot-message';
+    botMessageElement.innerHTML = `
+        <div class="bot-avatar">
+            <img src="./chat bot logo.png" alt="BillMart Bot" />
+        </div>
+        <div class="bot-message-content">
+            <span>${processedText}</span>
+        </div>
+    `;
+    
+    chatMessages.appendChild(botMessageElement);
+    
+    // Add buttons if provided
+    if (buttons && buttons.length > 0) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'quick-replies';
+        buttonContainer.innerHTML = buttons.map(btn => 
+            `<button class="quick-reply-btn" onclick="sendFAQ('${btn.payload}', '${escapeHtml(btn.title)}')">${escapeHtml(btn.title)}</button>`
+        ).join('');
+        chatMessages.appendChild(buttonContainer);
+    }
+    
+    // Force scroll to new message
+    smartScrollToBottom(chatMessages, true);
+}
+
+
+// === RASA COMMUNICATION ===
 function sendFAQ(payload, title) {
-    showChatInput();
-    setTimeout(() => {
+    if (isWelcomeMode) {
+      showChatInput();
+      // Give the DOM a moment to update before adding messages
+      setTimeout(() => {
+          addUserMessage(title);
+          sendToRasa(payload);
+      }, 100);
+    } else {
         addUserMessage(title);
         sendToRasa(payload);
-    }, 100);
+    }
 }
 
-// Send user typed message
-function sendUserMessage() {
+function sendUserTypedMessage() {
     const input = document.getElementById('billmart-chatbot-input');
     const message = input.value.trim();
     if (!message) return;
@@ -551,56 +894,6 @@ function sendUserMessage() {
     input.value = '';
 }
 
-// Add user message to chat
-function addUserMessage(text) {
-    const chatMessages = document.querySelector('.chat-messages');
-    if (!chatMessages) return;
-    
-    // Break very long words to prevent overflow
-    const processedText = text.replace(/(\S{40,})/g, (match) => {
-        return match.replace(/(.{40})/g, '$1\u200B');
-    });
-    
-    chatMessages.innerHTML += `
-        <div class="message user-message">
-            <span>${escapeHtml(processedText)}</span>
-        </div>
-    `;
-    scrollToBottom();
-}
-
-// Add bot message with optional quick replies
-
-function addBotMessage(text, buttons = []) {
-    const chatMessages = document.querySelector('.chat-messages');
-    if (!chatMessages) return;
-    
-    // Process markdown and long words
-    const processedText = processMarkdown(text.replace(/(\S{40,})/g, (match) => {
-        return match.replace(/(.{40})/g, '$1\u200B');
-    }));
-    
-    let buttonHtml = '';
-    if (buttons && buttons.length > 0) {
-        buttonHtml = `
-            <div class="quick-replies">
-                ${buttons.map(btn => 
-                    `<button class="quick-reply-btn" onclick="sendFAQ('${btn.payload}', '${btn.title}')">${btn.title}</button>`
-                ).join('')}
-            </div>
-        `;
-    }
-    
-    chatMessages.innerHTML += `
-        <div class="message bot-message">
-            <span>${processedText}</span>
-        </div>
-        ${buttonHtml}
-    `;
-   
-}
-
-// Send message to Rasa
 function sendToRasa(message) {
     const sendBtn = document.getElementById('send-button');
     sendBtn.disabled = true;
@@ -609,7 +902,7 @@ function sendToRasa(message) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            sender: "user_" + getSessionId(),
+            sender: currentUserId,
             message: message
         })
     })
@@ -624,55 +917,88 @@ function sendToRasa(message) {
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error sending message to Rasa:', error);
         addBotMessage("Sorry, I'm having trouble connecting. Please try again later.");
     })
     .finally(() => {
         sendBtn.disabled = false;
+        document.getElementById('billmart-chatbot-input').focus();
     });
 }
 
-// Improved scroll to bottom function
-function scrollToBottom() {
-    const content = document.getElementById('billmart-chatbot-content');
-    const chatMessages = document.querySelector('.chat-messages');
+// === **NEW**: ADVANCED AUTO-SCROLL LOGIC ===
+function smoothScrollToBottom(container) {
+    // Only scroll if the user is already near the bottom.
+    // This prevents disrupting a user who has scrolled up to read history.
+    const isScrolledToBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 100; // 100px buffer
     
-    if (chatMessages) {
-        // Scroll the chat messages container
-        setTimeout(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 100);
-    } else if (content) {
-        // Scroll the main content area
-        setTimeout(() => {
-            content.scrollTop = content.scrollHeight;
-        }, 100);
+    if (isScrolledToBottom) {
+        container.scrollTo({
+            top: container.scrollHeight,
+            behavior: 'smooth'
+        });
     }
 }
 
-// Utility functions
-function getSessionId() {
-    if (!window._billmartChatSession) {
-        window._billmartChatSession = Math.random().toString(36).substring(2, 10);
-    }
-    return window._billmartChatSession;
+function observeChatContainer(container) {
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // A new message was added, so we trigger our smart scroll.
+                smoothScrollToBottom(container);
+            }
+        });
+    });
+
+    observer.observe(container, { childList: true });
 }
+
+
+// === UTILITY & BROWSER FUNCTIONS ===
+function closeChatbot() {
+    document.getElementById('billmart-chatbot-window').style.display = 'none';
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevents form submission if it's in a form
+        sendUserTypedMessage();
+    }
+}
+
+function getSessionId() {
+    // This version uses a global variable that gets cleared on page refresh,
+    // ensuring a new session every time.
+    if (!window._billmartChatSessionId) {
+        window._billmartChatSessionId = Math.random().toString(36).substring(2, 10);
+    }
+    return window._billmartChatSessionId;
+}
+
 
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
+
 function processMarkdown(text) {
+    if (!text) return '';
     return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')              // Italic
-        .replace(/\n/g, '<br>')                            // Line breaks
-        .replace(/•/g, '&bull;')                           // Bullet points
-        .replace(/→/g, '&rarr;')                           // Arrows
-        .replace(/✅/g, '&#x2705;')                         // Checkmarks
-        .replace(/❌/g, '&#x274C;');                        // X marks
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>');
 }
+
+
+
+function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
 </script>
 
 </body>

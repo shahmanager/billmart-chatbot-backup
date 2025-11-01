@@ -5,6 +5,7 @@ language: en
 pipeline:
   # Step 1: Text tokenization
   - name: WhitespaceTokenizer
+  - name: components.typo_corrector.TypoCorrectorComponent
   
   # Step 2: Pattern recognition
   - name: RegexFeaturizer

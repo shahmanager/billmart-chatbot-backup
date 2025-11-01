@@ -1,0 +1,788 @@
+version: "3.1"
+nlu:
+- intent: ask_fees
+  examples: |
+    - What are the fees?
+    - [product] fees
+    - gigcash fees
+    - empcash fees
+    - scf fees
+    - icf fees
+    - fees
+    - charges
+    - processing fee
+    - what is the interest rate
+    - interest rate for [product]
+
+- intent: ask_eligibility
+  examples: |
+    - What is the eligibility?
+    - [product] eligibility
+    - gigcash eligibility
+    - empcash eligibility
+    - scf eligibility
+    - icf eligibility
+    - eligibilty
+    - eligiblity
+    - am I eligible?
+    - who can apply for [product]?
+    - who can get [product]?
+    - what is eligibility for [product]?
+
+- intent: ask_process
+  examples: |
+    - What is the process?
+    - [product] process
+    - gigcash process
+    - empcash process
+    - scf process
+    - icf process
+    - how does [product] work?
+    - steps for [product]
+    - how does it work 
+    - what are the steps for [product]?
+    - intent: ask_gigcash_info
+    - brief more about [product]
+
+    
+
+- intent: ask_requirements
+  examples: |
+    - What are the requirements?
+    - [product] requirements
+    - gigcash requirements
+    - empcash requirements
+    - scf requirements
+    - icf requirements
+    - requiremnets?
+    - gst required?
+    - gst returns
+    - what is required for [product]?
+    - gst returns requried for SCF
+    - how many months gst required 
+    - what is needed for [product]?
+    - what are the requirements for [product]?
+    - what are the requirements for gigcash?
+    - what are requiremnts 
+    - what are the requirements for empcash?
+    - what are the requirements for scf?
+    - what are the requirements for icf?
+    - what is needed for [product]?
+
+- intent: ask_documents
+  examples: |
+    - What documents are needed?
+    - [product] documents
+    - gigcash documents
+    - empcash documents
+    - scf documents
+    - icf documents
+    - documnts
+    - documents required for [product]
+
+- intent: ask_collateral
+  examples: |
+    - Is collateral required?
+    - [product] collateral
+    - gigcash collateral
+    - empcash collateral
+    - scf collateral
+    - icf collateral
+    - do I need to pledge anything for [product]?
+    - collateral 
+    - is collateral needed for [product]?
+    - is collateral required for [product]?
+    - do i need collateral
+    - do i need to pledge collateral
+    - do i need to pledge anything 
+
+- intent: ask_disbursement_speed
+  examples: |
+    - How fast is [product]?
+    - What is the disbursement time for [product]?
+    - gigcash speed
+    - empcash speed
+    - scf speed
+    - icf speed
+    - how quickly do I get money with [product]?
+    - time
+    - timeline 
+    - how long does it take to get [product]?
+    - how much time does it take for [product]?
+    - how much time will the process take?
+    - speed
+    
+
+- intent: declare_individual
+  examples: |
+    - I am an individual
+    - I want a personal loan
+    - I am a salaried employee
+    - I work for a company
+    - I am a gig worker
+    - I am a freelancer
+    - I am a delivery partner
+    - I am an Uber driver
+    - I do Zomato deliveries
+    - personal
+    - individual
+    - salaried
+    - employee
+- intent: declare_lender
+  examples: |
+    - I am a lender
+    - I want to invest
+    - I am a financer
+    - I provide loans
+    - I represent a bank
+    - I am from an NBFC
+    - I am a financial institution
+    - I am a credit provider
+    - I am a funding partner
+    - I am a financial partner
+    - lender
+    - investor
+    - financer
+    - bank
+    - NBFC
+    - financial institution
+    - credit provider
+    - i want to finance
+    - i want to fund
+    - i want to give loan
+    - we are a bank
+    - we are an NBFC
+    - we are a financial institution
+    - banker
+    - NBFC representative
+    - financial institution representative
+
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey
+    - good morning
+    - namaste
+    - hey there
+    - h
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you
+    - thanks bye
+- intent: request_demo
+  examples: |
+    - I want a demo
+    - Can I talk to someone?
+    - Connect me to your team
+    - Schedule a call
+    - I want to speak to an agent
+    - Human support
+    - demo
+- intent: ask_company_info
+  examples: |
+    - What is BillMart?
+    - Tell me about BillMart
+    - About your company
+    - Who are you?
+    - Company details
+    - What does BillMart do?
+    - billmart
+    - what is billmart
+- intent: ask_contact_info
+  examples: |
+    - How do I contact you?
+    - What is your phone number?
+    - Give me your email
+    - Where are your offices?
+    - Head office address
+    - customer support number
+    - customer support email
+    - contact details
+- intent: ask_services_offered
+  examples: |
+    - What services do you offer?
+    - List your products
+    - What are your offerings?
+    - What solutions do you provide?
+    - What can you help me with?
+    - Do you offer loans?
+    - what do yall do
+    - products
+    - services
+    - offerings
+    - solutions
+    - kya karte ho aap
+
+- intent: ask_eligibility
+  examples: |
+    - What is the eligibility?
+    - Am I eligible?
+    - Who can apply?
+    - Eligibility for EmpCash
+    - Eligibility for GigCash
+    - Eligibility for SCF
+    - Eligibility for insurance claim finance
+    - SCF eligibility
+    - gigcash eligibility
+    - empcash eligibility
+    - icf eligibility
+    - [product_name] eligibility
+    - eligibilty
+    - eligiblity
+    - elgibility
+
+- intent: ask_scf_benefits
+  examples: |
+    - Why use supply chain finance?
+    - Benefits of SCF
+    - How does SCF help my business?
+    - SCF benefits?
+    - why SCF
+    - why supply chain finance
+    - benefits of supply chain finance
+    - advantages of supply chain finance
+    - advantages of SCF
+- intent: ask_sales_bill_discounting
+  examples: |
+    - What is sales bill discounting?
+    - How does sales bill discounting work?
+    - Seller bill discounting
+    - sales bill financing
+    - sales invoice financing
+    - sales order financing
+    - sales bill 
+    - sales invoice
+    - sales order
+    - sales bill disocutning 
+
+- intent: ask_purchase_bill_discounting
+  examples: |
+    - What is purchase bill discounting?
+    - How does purchase bill discounting work?
+    - Buyer bill discounting
+    - Purchase invoice financing
+    - Purchase order financing
+    - purchase bill financing
+    - purchase invoice
+    - purchase order
+    - purchase bill discounting
+    - purchase bill
+
+- intent: ask_vendor_finance
+  examples: |
+    - Tell me about vendor finance
+    - Supplier financing
+    - Vendor support
+    - How does vendor finance work?
+    - Vendor financing
+    - what is vendor finance
+    - vendor finance
+    - vendor help 
+- intent: ask_dealer_finance
+  examples: |
+    - Tell me about dealer finance
+    - Dealer support
+    - Dealer financing
+    - How does dealer finance work?
+    - Dealer loan 
+    - dealer help 
+
+- intent: ask_early_payment_finance
+  examples: |
+    - What is early payment finance?
+    - Accelerated payment solution
+    - Early payment discounting
+    - How does early payment finance work?
+    - advance payment solution
+    - early payment finance
+    - early payment solution
+    - early payment
+- intent: ask_empcash_info
+  examples: |
+    - Tell me about EmpCash
+    - what is empcash 
+    - empcash details 
+    - empcash info 
+    - What is employee cash?
+    - Salary advance
+    - How does EmpCash work?
+    - empcash
+    - emp
+    - emp cash
+    - salary advance
+    - salary loan
+    - salary cash
+    - payday advance 
+    - early salary 
+    - employee cash
+    - employee salary advance
+    - employee salary loan
+    - employee salary cash
+    - employee payday advance
+    - employee early salary
+
+- intent: ask_empcash_amount_limit
+  examples: |
+    - How much can I withdraw with EmpCash?
+    - EmpCash limit
+    - Maximum salary advance
+    - What is the maximum amount for EmpCash?
+    - EmpCash funding limit
+    - empcash maximum amount
+    - empcash funding limit
+    - empcash maximum limit
+    - empcash withdrawal limit
+
+- intent: ask_empcash_credit_impact
+  examples: |
+    - Does EmpCash affect credit score?
+    - EmpCash and CIBIL
+    - Will salary advance impact my credit?
+    - EmpCash credit score effect
+    - empcash credit score
+    - empcash cibil
+    - empcash credit impact
+    - empcash credit effect
+    - empcash credit history
+
+- intent: ask_empcash_multiple_usage
+  examples: |
+    - Can I use EmpCash more than once?
+    - Multiple EmpCash advances
+    - Can I take multiple salary advances?
+    - EmpCash repeat usage
+    - empcash multiple usage
+    - empcash repeat usage
+    - empcash can I use again
+    - empcash can I take again
+    - empcash can I use multiple times
+    - empcash can I take multiple times
+    - empcash can I use again and again
+- intent: ask_gigcash_info
+  examples: |
+    - What is GigCash?
+    - Tell me about gig worker financing
+    - Freelancer loan
+    - GigCash product details
+    - gigcash
+    - gig cash
+    - gig worker financing
+    - freelancer loan
+    - gig worker cash
+    - gig worker loan
+    - Zomato
+    - uber
+    - driver
+    - delivery partner
+    - gig worker
+    - how does gigcash work
+    - gigcash product details
+    - gigcash details
+
+- intent: ask_gigcash_funding_amount
+  examples: |
+    - How much can I get with GigCash?
+    - GigCash amount limit
+    - Maximum gig worker funding
+    - What is the maximum amount for GigCash?
+    - GigCash funding limit
+    - gigcash maximum amount
+    - gigcash funding limit
+    - gigcash maximum limit
+    - gigcash funding amount
+    - gigcash maximum funding
+
+- intent: ask_gigcash_credit_impact
+  examples: |
+    - Does GigCash affect credit score?
+    - GigCash and CIBIL
+
+- intent: ask_gigcash_irregular_income
+  examples: |
+    - What if my gig income is irregular?
+    - GigCash for fluctuating earnings
+- intent: ask_lease_rental_discounting
+  examples: |
+    - What is lease rental discounting?
+    - LRD details
+    - Rental income loan
+    - what is lrd 
+    - what is ldr 
+    - lease rental discounting
+    - lease rental discounting details
+    - lease rental discounting loan
+    - lease rental discounting product
+    - lease rental discounting financing
+
+- intent: ask_term_loan
+  examples: |
+    - What is a term loan?
+    - Long term business loan
+    - term loan
+    - term loan details
+    - term loan product
+    - i need a term loan 
+    - do yall offer term loans
+    - do you give term loan
+  
+- intent: ask_short_term_loan
+  examples: |
+    - What is a short term loan?
+    - Short term business loan
+    - short term loan 
+    - short term loan details
+    - short term loan product
+    - i need a short term loan
+    - do yall offer short term loans
+    - do you give short term loan
+  
+- intent: ask_imark_info
+  examples: |
+    - What is iMARK?
+    - AI credit rating
+    - MSME credit grading
+    - iMARK details
+    - iMARK
+    - iMARK product
+
+
+
+- intent: ask_icf_difference
+  examples: |
+    - How is ICF different from a loan?
+    - ICF vs regular loan
+    - What makes ICF unique?
+    - ICF vs insurance loan
+    - how is insurance claim finance different from a loan
+    - how is icf different from a loan
+    - how is icf different from a regular loan
+
+- intent: ask_icf_data_safety
+  examples: |
+    - Is my hospital data safe with ICF?
+    - ICF data security
+- intent: ask_icf_delays
+  examples: |
+    - What if insurance is delayed?
+    - ICF and claim delay
+- intent: ask_registration_process
+  examples: |
+    - How to register on BillMart?
+    - Registration steps
+    - Business onboarding
+- intent: ask_registration_charges
+  examples: |
+    - What are registration charges?
+    - Is registration free?
+- intent: ask_who_can_register
+  examples: |
+    - Who can register on BillMart?
+    - Who is authorized to sign up?
+- intent: ask_nach_mandate
+  examples: |
+    - What is NACH mandate?
+    - Is NACH required?
+- intent: ask_nach_benefits
+  examples: |
+    - How does NACH help?
+    - NACH benefits
+- intent: ask_data_security
+  examples: |
+    - Is my data safe?
+    - Who can access my financial data?
+- intent: ask_supported_transactions
+  examples: |
+    - What transactions are supported?
+    - Can I do bill discounting?
+- intent: ask_bill_types
+  examples: |
+    - What bills can I upload?
+    - Bill types for financing
+- intent: ask_bill_restrictions
+  examples: |
+    - Are there restrictions on bills?
+    - Bill amount limits
+- intent: ask_discounting_percentage
+  examples: |
+    - What is the maximum discounting percentage?
+    - Who sets the discount rate?
+- intent: ask_maximum_tenure
+  examples: |
+    - What is the maximum tenure?
+    - How long can I finance a bill?
+- intent: ask_recourse_transaction
+  examples: |
+    - What is a recourse transaction?
+    - Recourse meaning
+- intent: ask_deal_note
+  examples: |
+    - What is a deal note?
+    - Deal note details
+- intent: ask_fund_crediting
+  examples: |
+    - When is the fund credited?
+    - Fund disbursement timeline
+- intent: ask_settlement_payment
+  examples: |
+    - How do I make settlement payment?
+    - Settlement process
+- intent: ask_status
+  examples: |
+    - How do I check my application status?
+    - Application status
+- intent: file_complaint
+  examples: |
+    - I want to file a complaint
+    - How do I complain?
+    - Report an issue
+- intent: thank_you
+  examples: |
+    - Thanks
+    - Thank you
+    - Appreciate your help
+- intent: affirm
+  examples: |
+    - yes
+    - yeah
+    - sure
+    - okay
+    - ya 
+    - absolutely
+    - definitely
+    - sounds good
+    - sure thing
+    - of course
+    - that's right
+- intent: deny
+  examples: |
+    - no
+    - not interested
+    - maybe later
+- intent: ask_documents
+  examples: |
+    - What documents do I need?
+    - Documents required
+    - What paperwork is needed?
+    - Documentation for [product_name]
+    - What documents do I need for [supply chain finance](product_name)?
+    - Documents required for [empcash](product_name)
+    - Paperwork for [gigcash](product_name)
+    - Documentation for [imark](product_name)
+    - What papers for [lease rental discounting](product_name)
+    - Docs for a [short term loan](product_name)
+- intent: ask_eligibility
+  examples: |
+    - Am I eligible?
+    - Who can apply?
+    - Eligibility for [product_name]
+- intent: ask_loan_amount_limits
+  examples: |
+    - How much can I get?
+    - What is the loan limit?
+    - Maximum amount for [product_name]
+- intent: ask_loan_need
+  examples: |
+    - I need a loan
+    - I need funding
+    - Financial help needed
+    - I want a loan
+    - I need money
+    - I need cash
+    - I need financial assistance
+    - I need working capital
+    - loan
+    - give me a loan
+    - help me get a loan
+    - i want to borrow money
+    - i want a loan
+- intent: ask_process
+  examples: |
+    - What is the process for [supply chain finance](product_name)?
+    - How does [empcash](product_name) work?
+    - Explain the process of [gigcash](product_name)
+    - Process for [insurance claim finance](product_name)
+    - What is the [dealer finance](product_name) process?
+    - Steps for [lease rental discounting](product_name)
+
+- intent: ask_supply_chain_finance
+  examples: |
+    - SCF
+    - scf 
+    - What is supply chain finance?
+    - Tell me about SCF
+    - What is SCF?
+    - SCF details
+    - supply chain finance
+    - what is supply chain finance
+    - supply chain finance details
+    - supply chain finance product
+    - invoice financing
+    - bill discounting
+    - vendor financing
+    - B-SCF
+    - supply chain financing
+    - scf info
+    - scf product
+    - what does scf mean
+    - explain supply chain finance
+    - how does supply chain finance work
+    - supply chain finance explained
+- intent: ask_lease_rental_discounting
+  examples: |
+    - what is lease rental discounting
+    - what is lrd
+    - what is LRD
+    - lease rental discounting
+    - lrd details
+    - rental income loan
+    - property backed financing
+    - lease rental finance
+    - commercial property financing
+    - rental discounting
+    - lrd
+    - LRD
+
+- intent: ask_short_term_loan
+  examples: |
+    - what is short term loan
+    - short term loan
+    - short-term loan
+    - quick business loan
+    - short term financing
+    - immediate funding
+    - quick loan
+    - short term business loan
+    - working capital loan
+    - emergency business funding
+
+- intent: ask_term_loan
+  examples: |
+    - what is term loan
+    - i want a term loan 
+    - term loan
+    - long term business loan
+    - business term loan
+    - long term financing
+    - term financing
+    
+
+- intent: ask_insurance_claim_finance
+  examples: |
+    - What is insurance claim finance?
+    - Tell me about ICF
+    - ICF details
+    - Hospital financing
+    - Insurance claim funding
+    - what is icf
+    - what is ICF
+    - insurance claim finance
+    - insurance claim finance details
+    - insurance claim finance product
+    - insurance loan
+    - insurance claim advance
+    - insurance claim
+    - hospital claim finance
+    - medical claim finance
+    - healthcare financing
+    - insurance delay funding
+    - claim financing
+    - pending claim finance
+
+- intent: declare_business
+  examples: |
+    - i am a [business owner](user_type)
+    - we are a [business](user_type)
+    - [business](user_type) entity
+    - i run a [company]{"entity": "user_type", "value": "business"}
+    - I run a business
+    - I own a company
+    - We are an MSME
+    - I am a business owner
+    - My company wants funding
+    - We need working capital
+    - I represent a business
+    - I am a business partner
+    - I am a startup founder
+    - I am a business manager
+    - business
+    - company
+    - MSME
+    - startup
+    - business owner
+    - business partner
+    - business manager
+    - business founder
+    - business man
+    - owner
+    - entrepreneur
+    - businesswoman
+    - [business owner]{"entity": "user_type", "value": "business_owner"}
+  
+- intent: complex_query
+  examples:
+    - RBI rules
+    - GST rules
+    - RBI guidelines
+    - how does GST affect my loan
+    - evergreening rules 
+    - rbi guidelines for loans
+    - goveremnt rules 
+    - rbi guidelines for startup loans 
+    - rules for foreign investors in a company 
+    - any compliance issues for comapny with foreign promoters?
+    - any complinace issues for a startup with foreign investors?
+    - compliances for a startup with foreign investors
+    - rbi guidliens for compnay with foreign investors
+  
+- synonym: supply chain finance
+  examples: |
+    - SCF
+    - B-SCF
+    - supply chain financing
+    - invoice financing
+    - bill discounting 
+- synonym: process
+  examples: |
+    - e proce
+    - proces 
+
+- synonym: business
+  examples: |
+    - company
+    - MSME
+    - startup
+- synonym: business_owner
+  examples: |
+    - business owner
+    - family business 
+    - owner 
+- synonym: insurance claim finance
+  examples: |
+    - ICF
+    - icf
+    - hospital financing
+    - insurance delay funding
+    - insurance claim loan
+    - insurance claim advance
+    - medical claim finance
+    - healthcare financing
+    - claim financing
+    
+- synonym: empcash
+  examples: |
+    - employee cash
+    - emp cash
+    - salary advance
+    - emp 
+    - salary loan
+- synonym: gigcash
+  examples: |
+    - gig cash
+    - gig worker financing
+    - freelancer loan
+    - zomato driver
+    - uber driver
+    - swiggy  
