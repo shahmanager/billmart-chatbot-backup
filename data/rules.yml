@@ -1,32 +1,62 @@
 version: "3.1"
 
 rules:
+# === GREETING & SESSION MANAGEMENT ===
 
-# --- GREETING & SESSION MANAGEMENT ---
-
-- rule: Greet user on session start
+- rule: Initialize session without forced greeting
   conversation_start: true
   steps:
     - action: action_session_start
-    - action: utter_greet
-    - action: utter_services_brief
-
+    - action: action_smart_session_handler
+    
 - rule: Greet user when they say hi
   steps:
     - intent: greet
     - action: utter_greet
     - action: utter_services_brief
 
-# --- MINIMAL STATE RESPONSES (Intelligent Context) ---
+# === CONTEXT-AWARE GENERIC QUERIES (New Specific Actions) ===
+
+- rule: Provide fees info
+  steps:
+    - intent: ask_fees
+    - action: action_provide_fees_info
+
+- rule: Provide eligibility info
+  steps:
+    - intent: ask_eligibility
+    - action: action_provide_eligibility_info
+
+- rule: Provide process info
+  steps:
+    - intent: ask_process
+    - action: action_provide_process_info
+
+- rule: Provide requirements info
+  steps:
+    - intent: ask_requirements
+    - action: action_provide_requirements_info
+
+- rule: Provide documents info
+  steps:
+    - intent: ask_documents
+    - action: action_provide_documents_info
+
+- rule: Provide collateral info
+  steps:
+    - intent: ask_collateral
+    - action: action_provide_collateral_info
+
+- rule: Provide disbursement speed info
+  steps:
+    - intent: ask_disbursement_speed
+    - action: action_provide_disbursement_speed_info
+
+# === MINIMAL STATE RESPONSES (Complex Context & State Management) ===
 
 - rule: Handle loan need (minimal state)
   steps:
     - intent: ask_loan_need
-    - action: action_process_with_minimal_state
-
-- rule: Handle process questions (minimal state)
-  steps:
-    - intent: ask_process
     - action: action_process_with_minimal_state
 
 - rule: Handle business declaration (minimal state)
@@ -49,7 +79,12 @@ rules:
     - intent: declare_lender
     - action: action_process_with_minimal_state
 
-# --- PRODUCT-SPECIFIC QUERIES (Minimal State) ---
+- rule: Handle salaried employee declaration (minimal state)
+  steps:
+    - intent: declare_salaried_employee
+    - action: action_process_with_minimal_state
+
+# === PRODUCT-SPECIFIC QUERIES (Minimal State for Product Context Setting) ===
 
 - rule: Handle GigCash queries (minimal state)
   steps:
@@ -66,16 +101,32 @@ rules:
     - intent: ask_supply_chain_finance
     - action: action_process_with_minimal_state
 
-- rule: Answer SCF collateral questions
+- rule: Handle ICF queries (minimal state)
   steps:
-    - intent: ask_scf_collateral
-    - action: utter_scf_collateral
-# --- CONTEXT-AWARE RESPONSES (STATIC - Keep for specific cases) ---
+    - intent: ask_insurance_claim_finance
+    - action: action_process_with_minimal_state
 
-- rule: Handle eligibility questions
+- rule: Handle iMark queries (minimal state)
   steps:
-    - intent: ask_eligibility
-    - action: action_provide_eligibility_info
+    - intent: ask_imark_info
+    - action: action_process_with_minimal_state
+
+- rule: Handle LRD queries (minimal state)
+  steps:
+    - intent: ask_lease_rental_discounting
+    - action: action_process_with_minimal_state
+
+- rule: Handle Short Term Loan queries (minimal state)
+  steps:
+    - intent: ask_short_term_loan
+    - action: action_process_with_minimal_state
+
+- rule: Handle Term Loan queries (minimal state)
+  steps:
+    - intent: ask_term_loan
+    - action: action_process_with_minimal_state
+
+# === BUSINESS-SPECIFIC STATIC RESPONSES ===
 
 - rule: Company information
   steps:
@@ -92,12 +143,57 @@ rules:
     - intent: ask_services_offered
     - action: utter_services_offered
 
-- rule: Document requirements
+- rule: Handle dealer finance queries
   steps:
-    - intent: ask_documents
-    - action: utter_documents
+    - intent: ask_dealer_finance
+    - action: utter_dealer_finance
 
-# --- BASIC INTERACTIONS ---
+- rule: Handle vendor finance queries
+  steps:
+    - intent: ask_vendor_finance
+    - action: utter_vendor_finance
+
+- rule: Handle sales bill discounting queries
+  steps:
+    - intent: ask_sales_bill_discounting
+    - action: utter_sales_bill_discounting
+
+- rule: Handle purchase bill discounting queries
+  steps:
+    - intent: ask_purchase_bill_discounting
+    - action: utter_purchase_bill_discounting
+
+- rule: Handle early payment finance queries
+  steps:
+    - intent: ask_early_payment_finance
+    - action: utter_early_payment_finance
+
+- rule: Handle data security questions
+  steps:
+    - intent: ask_data_security
+    - action: utter_data_security
+
+- rule: Handle registration process questions
+  steps:
+    - intent: ask_registration_process
+    - action: utter_registration_process
+
+- rule: Handle NACH mandate questions
+  steps:
+    - intent: ask_nach_mandate
+    - action: utter_nach_mandate
+
+- rule: Handle bill restrictions questions
+  steps:
+    - intent: ask_bill_restrictions
+    - action: utter_bill_restrictions
+
+- rule: Handle supported transactions questions
+  steps:
+    - intent: ask_supported_transactions
+    - action: utter_supported_transactions
+
+# === BASIC INTERACTIONS ===
 
 - rule: Say goodbye
   steps:
@@ -109,9 +205,35 @@ rules:
     - intent: thank_you
     - action: utter_thank_you
 
-# --- INTELLIGENT FALLBACK ---
+- rule: Handle affirmations
+  steps:
+    - intent: affirm
+    - action: action_handle_affirm 
 
-- rule: Handle fallback with minimal state
+- rule: Handle denials
+  steps:
+    - intent: deny
+    - action: utter_deny
+
+- rule: Handle demo requests
+  steps:
+    - intent: request_demo
+    - action: action_smart_demo
+
+- rule: Handle complaints
+  steps:
+    - intent: file_complaint
+    - action: utter_complaint_process
+
+# === INTELLIGENT FALLBACK ===
+
+- rule: Handle simple fallback with minimal state
   steps:
     - intent: nlu_fallback
-    - action: action_process_with_minimal_state
+    #- action: action_process_with_minimal_state
+    - action: action_llm_fallback 
+
+- rule: Handle complex queries with LLM
+  steps:
+    - intent: complex_query
+    - action: action_llm_fallback

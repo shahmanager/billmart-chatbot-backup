@@ -1,5 +1,118 @@
 version: "3.1"
 nlu:
+- intent: ask_fees
+  examples: |
+    - What are the fees?
+    - [product] fees
+    - gigcash fees
+    - empcash fees
+    - scf fees
+    - icf fees
+    - fees
+    - charges
+    - processing fee
+    - what is the interest rate
+    - interest rate for [product]
+
+- intent: ask_eligibility
+  examples: |
+    - What is the eligibility?
+    - [product] eligibility
+    - gigcash eligibility
+    - empcash eligibility
+    - scf eligibility
+    - icf eligibility
+    - eligibilty
+    - eligiblity
+    - am I eligible?
+    - who can apply for [product]?
+    - who can get [product]?
+    - what is eligibility for [product]?
+
+- intent: ask_process
+  examples: |
+    - What is the process?
+    - [product] process
+    - gigcash process
+    - empcash process
+    - scf process
+    - icf process
+    - how does [product] work?
+    - steps for [product]
+    - how does it work 
+    - what are the steps for [product]?
+    - intent: ask_gigcash_info
+    - brief more about [product]
+
+    
+
+- intent: ask_requirements
+  examples: |
+    - What are the requirements?
+    - [product] requirements
+    - gigcash requirements
+    - empcash requirements
+    - scf requirements
+    - icf requirements
+    - requiremnets?
+    - gst required?
+    - gst returns
+    - what is required for [product]?
+    - gst returns requried for SCF
+    - how many months gst required 
+    - what is needed for [product]?
+    - what are the requirements for [product]?
+    - what are the requirements for gigcash?
+    - what are requiremnts 
+    - what are the requirements for empcash?
+    - what are the requirements for scf?
+    - what are the requirements for icf?
+    - what is needed for [product]?
+
+- intent: ask_documents
+  examples: |
+    - What documents are needed?
+    - [product] documents
+    - gigcash documents
+    - empcash documents
+    - scf documents
+    - icf documents
+    - documnts
+    - documents required for [product]
+
+- intent: ask_collateral
+  examples: |
+    - Is collateral required?
+    - [product] collateral
+    - gigcash collateral
+    - empcash collateral
+    - scf collateral
+    - icf collateral
+    - do I need to pledge anything for [product]?
+    - collateral 
+    - is collateral needed for [product]?
+    - is collateral required for [product]?
+    - do i need collateral
+    - do i need to pledge collateral
+    - do i need to pledge anything 
+
+- intent: ask_disbursement_speed
+  examples: |
+    - How fast is [product]?
+    - What is the disbursement time for [product]?
+    - gigcash speed
+    - empcash speed
+    - scf speed
+    - icf speed
+    - how quickly do I get money with [product]?
+    - time
+    - timeline 
+    - how long does it take to get [product]?
+    - how much time does it take for [product]?
+    - how much time will the process take?
+    - speed
+    
+
 - intent: declare_individual
   examples: |
     - I am an individual
@@ -102,37 +215,25 @@ nlu:
     - offerings
     - solutions
     - kya karte ho aap
-- intent: ask_supply_chain_finance
+
+- intent: ask_eligibility
   examples: |
-    - Tell me about supply chain finance
-    - What is SCF?
-    - Explain B-SCF
-    - Invoice financing
-    - Bill discounting
-    - Vendor financing
-    - SCF
-    - invoice financing
-    - bill discounting
-    - supply chain financing
-    - supply chain finance
-    - what is supply chain finance
-    - supply chain finance explained
-    - supply chain finance details
-
-
-
-- intent: ask_scf_requirements
-  examples: |
-    - What documents for supply chain finance?
+    - What is the eligibility?
+    - Am I eligible?
+    - Who can apply?
+    - Eligibility for EmpCash
+    - Eligibility for GigCash
+    - Eligibility for SCF
+    - Eligibility for insurance claim finance
     - SCF eligibility
-    - What are the requirements for SCF?
-    - supply chain proceess requiremnts 
-    - what documents are needed for supply chain finance?
-    - supply chain finance eligibility
-    - supply chain finance requirements
-    - supply chain finance documents
-    - SCF requiremnts 
-    
+    - gigcash eligibility
+    - empcash eligibility
+    - icf eligibility
+    - [product_name] eligibility
+    - eligibilty
+    - eligiblity
+    - elgibility
+
 - intent: ask_scf_benefits
   examples: |
     - Why use supply chain finance?
@@ -222,17 +323,7 @@ nlu:
     - employee salary cash
     - employee payday advance
     - employee early salary
-- intent: ask_empcash_eligibility
-  examples: |
-    - Who is eligible for EmpCash?
-    - EmpCash criteria
-    - Can I apply for EmpCash?
-    - Who can use EmpCash?
-    - EmpCash eligibility
-    - empcash eligibility
-    - empcash criteria
-    - empcash who can apply
-    - empcash who can use
+
 - intent: ask_empcash_amount_limit
   examples: |
     - How much can I withdraw with EmpCash?
@@ -244,22 +335,6 @@ nlu:
     - empcash funding limit
     - empcash maximum limit
     - empcash withdrawal limit
-- intent: ask_empcash_fees
-  examples: |
-    - What fees for EmpCash?
-    - EmpCash charges
-    - EmpCash interest rate
-    - Are there any costs for EmpCash?
-    - EmpCash service fees
-    - empcash fees
-    - empcash charges
-    - empcash interest rate
-    - empcash costs
-    - empcash service fees
-    - empcash processing fees
-    - empcash processing charges
-    - empcash processing interest rate
-    - empcash processing costs
 
 - intent: ask_empcash_credit_impact
   examples: |
@@ -272,20 +347,7 @@ nlu:
     - empcash credit impact
     - empcash credit effect
     - empcash credit history
-- intent: ask_empcash_speed
-  examples: |
-    - How fast is EmpCash?
-    - EmpCash disbursement time
-    - When will I get my salary advance?
-    - EmpCash processing time
-    - empcash speed
-    - empcash disbursement time
-    - empcash processing time
-    - empcash how fast
-    - empcash when will I get
-    - empcash how long
-    - empcash how quickly
-    - empcash time taken
+
 - intent: ask_empcash_multiple_usage
   examples: |
     - Can I use EmpCash more than once?
@@ -319,17 +381,7 @@ nlu:
     - how does gigcash work
     - gigcash product details
     - gigcash details
-- intent: ask_gigcash_eligibility
-  examples: |
-    - Who is eligible for GigCash?
-    - GigCash criteria
-    - Can I apply for GigCash?
-    - Who can use GigCash?
-    - GigCash eligibility
-    - gigcash eligibility
-    - gigcash criteria
-    - gigcash who can apply
-    - gigcash who can use
+
 - intent: ask_gigcash_funding_amount
   examples: |
     - How much can I get with GigCash?
@@ -342,37 +394,11 @@ nlu:
     - gigcash maximum limit
     - gigcash funding amount
     - gigcash maximum funding
-- intent: ask_gigcash_fees
-  examples: |
-    - What fees for GigCash?
-    - GigCash charges
-    - GigCash interest rate
-    - Are there any costs for GigCash?
-    - GigCash service fees
-    - gigcash fees
-    - gigcash charges
-    - gigcash interest rate
-    - gigcash costs
-    - gigcash service fees
+
 - intent: ask_gigcash_credit_impact
   examples: |
     - Does GigCash affect credit score?
     - GigCash and CIBIL
-- intent: ask_gigcash_speed
-  examples: |
-    - How fast is GigCash?
-    - GigCash disbursement time
-    - how long will it take to get GigCash?
-    - When will I get my gig worker funding?
-    - GigCash processing time
-    - how long does gigcash take 
-    - gigcash speed
-    - gigcash time
-    - gigcash time taken 
-    - how fast is gigcash 
-    - what is the timeline for gigcash 
-    - gigcash timeline 
-    - how much time will gigcash take  
 
 - intent: ask_gigcash_irregular_income
   examples: |
@@ -422,50 +448,7 @@ nlu:
     - iMARK
     - iMARK product
 
-- intent: ask_insurance_claim_finance
-  examples: |
-    - What is insurance claim finance?
-    - ICF details
-    - Hospital financing
-    - Insurance delay funding
-    - Insurance claim loan
-    - Insurance claim advance
-    - Insurance claim cash
-    - Insurance claim funding
-    - ICF 
-    - icf 
-    - what is icf
-    - insurance claim finance
-    - insurance claim finance details
-    - insurance claim finance product
-    - insurance loan 
-    - insurance claim advance
-    - insurance claim 
 
-- intent: ask_icf_speed
-  examples: |
-    - How fast is insurance claim finance?
-    - ICF disbursement time
-    - When will I get my insurance claim funding?
-    - ICF processing time
-    - icf speed
-    - icf time
-    - icf time taken
-    - icf timeline 
-    - icf how long does it take
-    - icf how fast
-
-- intent: ask_scf_collateral
-  examples: |
-    - Is collateral required for SCF?
-    - SCF collateral
-    - Do I need security for supply chain finance?
-    - Is SCF secured or unsecured?
-    - supply chain finance collateral
-    - Is collateral needed for supply chain finance?
-    - Is supply chain finance unsecured?
-    - Any collateral for SCF?
-    - Do I need to pledge assets for SCF?
 
 - intent: ask_icf_difference
   examples: |
@@ -476,18 +459,7 @@ nlu:
     - how is insurance claim finance different from a loan
     - how is icf different from a loan
     - how is icf different from a regular loan
-- intent: ask_icf_collateral
-  examples: |
-    - Is collateral required for ICF?
-    - ICF security
-- intent: ask_icf_application
-  examples: |
-    - How to apply for ICF?
-    - ICF application process
-- intent: ask_icf_claim_process
-  examples: |
-    - Will BillMart handle my insurance claim?
-    - ICF claim process
+
 - intent: ask_icf_data_safety
   examples: |
     - Is my hospital data safe with ICF?
@@ -634,17 +606,91 @@ nlu:
     - Process for [insurance claim finance](product_name)
     - What is the [dealer finance](product_name) process?
     - Steps for [lease rental discounting](product_name)
-- intent: ask_scf_process
+
+- intent: ask_supply_chain_finance
   examples: |
-    - what is the process for [supply chain finance](product_name)
-    - how does [SCF]{"entity": "product_name", "value": "supply chain finance"} work
-    - explain [process](query_type) for SCF
-    - SCF [process](query_type) details
-    - What is the process for supply chain finance?
-    - How does SCF work?
-    - Steps for invoice financing
-    - Process for bill discounting
-    - whats th[e proce]{"entity": "query_type", "value": "process"}ss
+    - SCF
+    - scf 
+    - What is supply chain finance?
+    - Tell me about SCF
+    - What is SCF?
+    - SCF details
+    - supply chain finance
+    - what is supply chain finance
+    - supply chain finance details
+    - supply chain finance product
+    - invoice financing
+    - bill discounting
+    - vendor financing
+    - B-SCF
+    - supply chain financing
+    - scf info
+    - scf product
+    - what does scf mean
+    - explain supply chain finance
+    - how does supply chain finance work
+    - supply chain finance explained
+- intent: ask_lease_rental_discounting
+  examples: |
+    - what is lease rental discounting
+    - what is lrd
+    - what is LRD
+    - lease rental discounting
+    - lrd details
+    - rental income loan
+    - property backed financing
+    - lease rental finance
+    - commercial property financing
+    - rental discounting
+    - lrd
+    - LRD
+
+- intent: ask_short_term_loan
+  examples: |
+    - what is short term loan
+    - short term loan
+    - short-term loan
+    - quick business loan
+    - short term financing
+    - immediate funding
+    - quick loan
+    - short term business loan
+    - working capital loan
+    - emergency business funding
+
+- intent: ask_term_loan
+  examples: |
+    - what is term loan
+    - i want a term loan 
+    - term loan
+    - long term business loan
+    - business term loan
+    - long term financing
+    - term financing
+    
+
+- intent: ask_insurance_claim_finance
+  examples: |
+    - What is insurance claim finance?
+    - Tell me about ICF
+    - ICF details
+    - Hospital financing
+    - Insurance claim funding
+    - what is icf
+    - what is ICF
+    - insurance claim finance
+    - insurance claim finance details
+    - insurance claim finance product
+    - insurance loan
+    - insurance claim advance
+    - insurance claim
+    - hospital claim finance
+    - medical claim finance
+    - healthcare financing
+    - insurance delay funding
+    - claim financing
+    - pending claim finance
+
 - intent: declare_business
   examples: |
     - i am a [business owner](user_type)
@@ -674,34 +720,69 @@ nlu:
     - entrepreneur
     - businesswoman
     - [business owner]{"entity": "user_type", "value": "business_owner"}
+  
+- intent: complex_query
+  examples: |
+    - RBI rules
+    - GST rules
+    - RBI guidelines
+    - how does GST affect my loan
+    - evergreening rules 
+    - rbi guidelines for loans
+    - goveremnt rules 
+    - rbi guidelines for startup loans 
+    - rules for foreign investors in a company 
+    - any compliance issues for comapny with foreign promoters?
+    - any complinace issues for a startup with foreign investors?
+    - compliances for a startup with foreign investors
+    - rbi guidliens for compnay with foreign investors
+  
 - synonym: supply chain finance
   examples: |
     - SCF
     - B-SCF
     - supply chain financing
     - invoice financing
-    - bill discounting
+    - bill discounting 
 - synonym: process
   examples: |
     - e proce
+    - proces 
+
 - synonym: business
   examples: |
     - company
+    - MSME
+    - startup
 - synonym: business_owner
   examples: |
     - business owner
+    - family business 
+    - owner 
 - synonym: insurance claim finance
   examples: |
     - ICF
+    - icf
     - hospital financing
     - insurance delay funding
+    - insurance claim loan
+    - insurance claim advance
+    - medical claim finance
+    - healthcare financing
+    - claim financing
+    
 - synonym: empcash
   examples: |
     - employee cash
     - emp cash
     - salary advance
+    - emp 
+    - salary loan
 - synonym: gigcash
   examples: |
     - gig cash
     - gig worker financing
     - freelancer loan
+    - zomato driver
+    - uber driver
+    - swiggy  

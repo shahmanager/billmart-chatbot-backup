@@ -1,91 +1,86 @@
 version: '3.1'
+
 intents:
-- affirm
-- ask_bill_restrictions
-- ask_bill_types
-- ask_company_info
-- ask_contact_info
-- ask_data_security
-- ask_deal_note
-- ask_dealer_finance
-- ask_discounting_percentage
-- ask_documents
-- ask_early_payment_finance
-- ask_eligibility
-- ask_empcash_amount_limit
-- ask_empcash_credit_impact
-- ask_empcash_eligibility
-- ask_empcash_fees
-- ask_empcash_info
-- ask_empcash_multiple_usage
-- ask_empcash_speed
-- ask_fund_crediting
-- ask_gigcash_credit_impact
-- ask_gigcash_eligibility
-- ask_gigcash_fees
-- ask_gigcash_funding_amount
-- ask_gigcash_info
-- ask_gigcash_irregular_income
-- ask_gigcash_speed
-- ask_icf_application
-- ask_icf_claim_process
-- ask_icf_collateral
-- ask_icf_data_safety
-- ask_icf_delays
-- ask_icf_difference
-- ask_icf_speed
-- ask_imark_info
-- ask_insurance_claim_finance
-- ask_lease_rental_discounting
-- ask_loan_amount_limits
-- ask_loan_need
-- ask_maximum_tenure
-- ask_nach_benefits
-- ask_nach_mandate
-- ask_process
-- utter_scf_collateral
-- ask_purchase_bill_discounting
-- ask_recourse_transaction
-- ask_registration_charges
-- ask_registration_process
-- ask_sales_bill_discounting
-- ask_scf_benefits
-- ask_scf_process
-- ask_scf_requirements
-- ask_services_offered
-- ask_settlement_payment
-- ask_short_term_loan
-- ask_status
-- ask_supply_chain_finance
-- ask_supported_transactions
-- ask_term_loan
-- ask_vendor_finance
-- ask_who_can_register
-- declare_business
-- declare_gig_worker
-- declare_individual
-- declare_lender
-- declare_salaried_employee
-- deny
-- file_complaint
-- goodbye
-- greet
-- inform_unemployed
-- inform_user_type
-- request_demo
-- thank_you
+  # === CORE GENERIC INTENTS (Context-Aware) ===
+  - ask_fees
+  - ask_eligibility
+  - ask_process
+  - ask_requirements
+  - ask_documents
+  - ask_collateral
+  - ask_disbursement_speed
+  
+  # === PRODUCT DISCOVERY INTENTS (Keep for initial product info) ===
+  - ask_empcash_info
+  - ask_gigcash_info
+  - ask_supply_chain_finance
+  - ask_insurance_claim_finance
+  - ask_imark_info
+  - ask_lease_rental_discounting
+  - ask_short_term_loan
+  - ask_term_loan
+  
+  # === BUSINESS-SPECIFIC INTENTS (Keep - not product-specific) ===
+  - ask_bill_restrictions
+  - ask_bill_types
+  - ask_company_info
+  - ask_contact_info
+  - ask_data_security
+  - ask_deal_note
+  - ask_dealer_finance
+  - ask_discounting_percentage
+  - ask_early_payment_finance
+  - ask_fund_crediting
+  - ask_loan_amount_limits
+  - ask_loan_need
+  - ask_maximum_tenure
+  - ask_nach_benefits
+  - ask_nach_mandate
+  - ask_purchase_bill_discounting
+  - ask_recourse_transaction
+  - ask_registration_charges
+  - ask_registration_process
+  - ask_sales_bill_discounting
+  - ask_services_offered
+  - ask_settlement_payment
+  - ask_status
+  - ask_supported_transactions
+  - ask_vendor_finance
+  - ask_who_can_register
+  
+  # === USER TYPE DECLARATIONS ===
+  - declare_business
+  - declare_gig_worker
+  - declare_individual
+  - declare_lender
+  - declare_salaried_employee
+  
+  # === CONVERSATION FLOW ===
+  - nlu_fallback
+  - affirm
+  - deny
+  - greet
+  - goodbye
+  - thank_you
+  - inform_unemployed
+  - inform_user_type
+  - request_demo
+  - file_complaint
+  - complex_query
+
 entities:
-- product_name
-- user_type
-- service_subtype
-- user_language
-- conversation_context
-- query_type
+  - product_name
+  - user_type
+  - service_subtype
+  - user_language
+  - conversation_context
+  - query_type
+
 slots:
   requested_slot:
     type: text
     influence_conversation: false
-    mappings: []
+    mappings: [] 
 
   user_type:
     type: categorical
@@ -103,6 +98,20 @@ slots:
     influence_conversation: false
     mappings: []
 
+  product_focus:
+    type: text
+    influence_conversation: true
+    mappings: []
+
+  last_fallback_mode:
+    type: text
+    mappings:
+      - type: custom
+  
+  last_confidence:
+    type: float
+    mappings:
+      - type: custom
 responses:
   utter_ask_user_type:
   - text: |
@@ -114,6 +123,10 @@ responses:
         👤 **Individual** - Need personal financial assistance?
         
         Just type your category (e.g., "business", "lender", "individual")
+
+  utter_affirm:
+  - text: "Great! Is there anything else I can help you with?"
+
   utter_ask_product_name:
   - text: 'Which product interests you: EmpCash, GigCash, Supply Chain Finance, Insurance Claim Finance, or Term Loan?'
   utter_greet:
@@ -204,7 +217,7 @@ responses:
   - text: |
       **Sales Bill Discounting** enables MSMEs (sellers) to get faster payments by selling their receivables (invoices) to a financial institution at a discounted rate. This helps MSMEs receive immediate cash instead of waiting 30-90 days for payment from large buyers. The seller bears the financing costs.
       This service is ideal for businesses looking to improve cash flow and manage working capital efficiently.
-      Would you like to know more about how it works?
+      
   utter_sales_bill_discounting_process:
   - text: |
       Here is how Sales Bill Discounting works:
@@ -213,6 +226,12 @@ responses:
       3. The Supplier sells the invoice to the financer to raise funding.
       4. The financer validates the transaction and disburses funds to the Supplier's account.
       5. On the due date, the Buyer repays the financer.
+  
+  utter_deny:
+    - text: "Okay, understood. Is there anything else I can help you with today?"
+
+  utter_complaint_process:
+    - text: "I'm sorry to hear you're having an issue. To file a complaint, please email us at care@billmart.com with the subject 'Complaint' and provide details of your issue. Our team will get back to you within 24 hours."
   utter_faq_sbd_what_is:
   - text: Sales Bill Discounting is a financing option that allows vendors (seller/borrower) to receive immediate funds against their sales invoices.
   utter_faq_sbd_who_can_avail:
@@ -273,8 +292,6 @@ responses:
   - text: The loan amount is determined based on the dealer’s sales and creditworthiness.
   utter_faq_df_growth:
   - text: It ensures liquidity, allowing dealers to stock more inventory and meet customer demands, which helps businesses grow.
-  utter_faq_df_eligibility:
-  - text: Dealers typically need a stable credit history, consistent sales performance, and valid business documentation to qualify.
   utter_faq_df_collateral:
   - text: No, collateral is not required for Dealer Finance.
   utter_early_payment_finance_info:
@@ -353,7 +370,7 @@ responses:
       GigCash eligibility:
       🚗 Uber/Ola drivers, 🍕 Zomato/Swiggy partners, 💻 freelancers, etc.
       ✅ 3+ months on platform, consistent earnings, KYC.
-      Which platforms do you work with?
+      
   utter_gigcash_process:
   - text: |
       Here’s how GigCash works:
@@ -370,8 +387,6 @@ responses:
       - **No Collateral or Credit Score Requirements:** Eligibility is based on your earnings and gig work profile.
       - **Transparent & Low-Cost:** Clear, upfront interest rates and minimal processing fees.
       - **Seamless Auto-Repayment:** Repayments are deducted from your platform earnings.
-  utter_faq_gigcash_eligibility:
-  - text: GigCash is available to freelancers, independent contractors, and gig workers who receive payments through verified platforms or clients.
   utter_faq_gigcash_limit:
   - text: Your eligible amount is based on your past earnings and income stability. You can typically access up to 50% of your estimated monthly earnings.
   utter_faq_gigcash_credit_score:
@@ -462,7 +477,7 @@ responses:
       • API / rule-engine bidding, granular risk data  
       • ISO-27001 / SOC-2 infra, escrow settlement
 
-      Would you like the **deal-flow deck** or to **speak to our capital-markets team**?
+      Would you like the **deal-flow deck** ?
   utter_short_term_loan_process:
   - text: |
       Here is how our BEST Loan works:
@@ -580,7 +595,7 @@ responses:
       💰 **Need a loan?** → I can guide you to the right product
       📞 **Contact info?** → Get our office details
       📊 **Learn about us?** → Company information
-      🎯 **Specific product?** → Ask about EmpCash, GigCash, SCF, etc.
+      🎯 **Specific product?** → Ask about EmpCash, GigCash, Supply Chain Finance, etc.
 
       Just type what you need or ask me anything!
   utter_company_info:
@@ -621,26 +636,26 @@ responses:
   - text: |
       Here’s our simple process:
       1. Register & KYC online
-      2. Upload docs; AI verifies instantly
+      2. Upload docs; we verify it
       3. Multiple financers bid; pick best offer
       4. Money to your account (2h for EmpCash, 24-48h for ICF)
       100% digital, no paperwork.
   utter_demo:
   - text: |
-      Absolutely! I’ll connect you with our team.
+      Absolutely!
       ✅ Instant eligibility check
       ✅ Product walkthrough
       ✅ Documents required
       ✅ Rate comparison
       ✅ Timeline & next steps
-      Call +91 93269 46663 or email care@billmart.com, or say "schedule callback" for a call in 15 minutes.
+      Call +91 93269 46663 or email care@billmart.com
   utter_empcash_eligibility:
   - text: |
       EmpCash eligibility:
       👔 Salaried employee at a BillMart partner company
       🏢 Meet employer’s criteria
       ⏰ 3+ months employment preferred
-      Want to check if your company is registered?
+    
   utter_empcash_amount_limit:
   - text: |
       Typically up to 50% of earned salary, depending on employer policy.
@@ -663,7 +678,11 @@ responses:
       GigCash eligibility:
       🚗 Uber/Ola drivers, 🍕 Zomato/Swiggy partners, 💻 freelancers, etc.
       ✅ 3+ months on platform, consistent earnings, KYC.
-      Which platforms do you work with?
+      
+
+  utter_ask_eligibility:
+    - text: Please specify which product's eligibility you want to know about (e.g., EmpCash, GigCash, SCF, ICF, Short Term Loan, etc).
+
   utter_gigcash_funding_amount:
   - text: |
       Up to 50% of average monthly gig earnings, calculated from last 3-6 months.
@@ -905,11 +924,23 @@ responses:
       📋 Application process
       What do you want to know?
 actions:
+- action_session_start
+- action_smart_session_handler
 - action_provide_process_info
 - action_provide_eligibility_info
 - action_smart_demo
 - action_route_after_form
 - action_process_with_minimal_state
+- action_provide_fees_info
+- action_provide_requirements_info
+- action_provide_documents_info
+- action_provide_collateral_info
+- action_provide_disbursement_speed_info
+- action_handle_affirm
+- action_llm_fallback
+ 
+
 session_config:
-  session_expiration_time: 0
-  carry_over_slots_to_new_session: false
+  session_expiration_time: 60 
+  carry_over_slots_to_new_session: true
+

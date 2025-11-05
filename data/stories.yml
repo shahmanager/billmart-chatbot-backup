@@ -11,7 +11,7 @@ stories:
     - intent: declare_gig_worker
     - action: action_process_with_minimal_state
     - intent: ask_process
-    - action: action_process_with_minimal_state
+    - action: action_provide_process_info
 
 - story: Business user journey
   steps:
@@ -116,7 +116,7 @@ stories:
 - story: icf info and process
   steps:
     - intent: ask_insurance_claim_finance
-    - action: utter_insurance_claim_finance
+    - action: action_process_with_minimal_state
     - intent: ask_icf_speed
     - action: utter_icf_speed
     - intent: ask_icf_difference
@@ -137,22 +137,22 @@ stories:
 - story: lease rental discounting info
   steps:
     - intent: ask_lease_rental_discounting
-    - action: utter_lease_rental_discounting
+    - action: action_process_with_minimal_state
 
 - story: term loan info
   steps:
     - intent: ask_term_loan
-    - action: utter_term_loan
+    - action: action_process_with_minimal_state
 
 - story: short term loan info
   steps:
     - intent: ask_short_term_loan
-    - action: utter_short_term_loan
+    - action: action_process_with_minimal_state
 
 - story: imark info
   steps:
     - intent: ask_imark_info
-    - action: utter_imark_info
+    - action: action_process_with_minimal_state
 
 # ========== Registration, Platform, and FAQ ==========
 
@@ -205,14 +205,14 @@ stories:
     - intent: ask_status
     - action: utter_status
     - intent: file_complaint
-    - action: utter_file_complaint
+    - action: utter_complaint_process
 
 # ========== General and Contextual Flows ==========
 
 - story: smart process inquiry
   steps:
     - intent: ask_process
-    - action: action_process_with_minimal_state  # ← FIXED: Was action_provide_process_info
+    - action: action_provide_process_info
 
 - story: smart eligibility check
   steps:
@@ -240,7 +240,7 @@ stories:
 - story: fallback default
   steps:
     - intent: nlu_fallback
-    - action: action_process_with_minimal_state  # ← FIXED: Was utter_default
+    - action: action_llm_fallback
 
 # ========== Additional Context-Aware Flows ==========
 
@@ -251,7 +251,7 @@ stories:
     - intent: ask_gigcash_info
     - action: action_process_with_minimal_state
     - intent: ask_process
-    - action: action_process_with_minimal_state
+    - action: action_provide_process_info
 
 - story: business scf complete journey
   steps:

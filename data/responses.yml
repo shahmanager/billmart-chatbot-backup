@@ -23,7 +23,7 @@ responses:
         💰 **Need a loan?** → I can guide you to the right product
         📞 **Contact info?** → Get our office details
         📊 **Learn about us?** → Company information
-        🎯 **Specific product?** → Ask about EmpCash, GigCash, SCF, etc.
+        🎯 **Specific product?** → Ask about EmpCash, GigCash, SCF, ICF, Bill Discounting, etc
         
         Just type what you need or ask me anything!
 
@@ -76,13 +76,13 @@ responses:
 
   utter_demo:
     - text: |
-        Absolutely! I’ll connect you with our team.
+        Absolutely! 
         ✅ Instant eligibility check
         ✅ Product walkthrough
         ✅ Documents required
         ✅ Rate comparison
         ✅ Timeline & next steps
-        Call +91 93269 46663 or email care@billmart.com, or say "schedule callback" for a call in 15 minutes.
+        Call +91 93269 46663 or email care@billmart.com
 
   utter_empcash_info:
     - text: |
@@ -98,7 +98,7 @@ responses:
         👔 Salaried employee at a BillMart partner company
         🏢 Meet employer’s criteria
         ⏰ 3+ months employment preferred
-        Want to check if your company is registered?
+        
 
   utter_empcash_amount_limit:
     - text: |
@@ -136,7 +136,7 @@ responses:
         GigCash eligibility:
         🚗 Uber/Ola drivers, 🍕 Zomato/Swiggy partners, 💻 freelancers, etc.
         ✅ 3+ months on platform, consistent earnings, KYC.
-        Which platforms do you work with?
+        
 
         
 
